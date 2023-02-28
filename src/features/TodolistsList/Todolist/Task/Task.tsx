@@ -1,39 +1,40 @@
-import React, {ChangeEvent, useCallback} from 'react'
+import React, {ChangeEvent} from 'react'
 import {EditableSpan} from '../../../../components/EditableSpan/EditableSpan'
 import { Delete } from '@mui/icons-material';
 import IconButton from '@mui/material/IconButton';
 import Checkbox from '@mui/material/Checkbox';
 import {TaskStatuses, TaskType} from '../../../../api/todolists-api'
+import {removeTaskTC, updateTaskTC} from "../../tasks-reducer";
+import {useAppDispatch} from "../../../../app/store";
 
 
 type TaskPropsType = {
     task: TaskType
     todolistId: string
-    changeTaskStatus: (id: string, status: TaskStatuses, todolistId: string) => void
-    changeTaskTitle: (taskId: string, newTitle: string, todolistId: string) => void
-    removeTask: (taskId: string, todolistId: string) => void
+
 }
-export const Task = React.memo((props: TaskPropsType) => {
-    const onClickHandler = useCallback(() => props.removeTask(props.task.id, props.todolistId), [props.task.id, props.todolistId]);
+export const Task = React.memo(({task, todolistId}: TaskPropsType) => {
+    const dispatch = useAppDispatch()
 
-    const onChangeHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    const removeTask = () => dispatch(removeTaskTC(task.id, todolistId))
+
+    const changeTaskStatus = (e: ChangeEvent<HTMLInputElement>) => {
         let newIsDoneValue = e.currentTarget.checked
-        props.changeTaskStatus(props.task.id, newIsDoneValue ? TaskStatuses.Completed : TaskStatuses.New, props.todolistId)
-    }, [props.task.id, props.todolistId]);
+        let status = newIsDoneValue ? TaskStatuses.Completed : TaskStatuses.New
+        const thunk = updateTaskTC(task.id, {status}, todolistId)
+        dispatch(thunk)
+    }
+    const changeTaskTitle = (newTitle: string) => dispatch(updateTaskTC(task.id, {title: newTitle}, todolistId))
 
-    const onTitleChangeHandler = useCallback((newValue: string) => {
-        props.changeTaskTitle(props.task.id, newValue, props.todolistId)
-    }, [props.task.id, props.todolistId]);
-
-    return <div key={props.task.id} className={props.task.status === TaskStatuses.Completed ? 'is-done' : ''}>
+    return <div key={task.id} className={task.status === TaskStatuses.Completed ? 'is-done' : ''}>
         <Checkbox
-            checked={props.task.status === TaskStatuses.Completed}
+            checked={task.status === TaskStatuses.Completed}
             color="primary"
-            onChange={onChangeHandler}
+            onChange={changeTaskStatus}
         />
 
-        <EditableSpan value={props.task.title} onChange={onTitleChangeHandler}/>
-        <IconButton onClick={onClickHandler}>
+        <EditableSpan value={task.title} onChange={changeTaskTitle}/>
+        <IconButton onClick={removeTask}>
             <Delete/>
         </IconButton>
     </div>
