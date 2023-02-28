@@ -11,6 +11,7 @@ import {useFormik} from "formik";
 import {loginTC} from "./auth-reducer";
 import {useAppDispatch, useAppSelector} from "../../app/store";
 import {Navigate} from "react-router-dom";
+import s from './Login.module.css'
 
 type FormikErrorType = {
     email?: string
@@ -48,11 +49,11 @@ export const Login = () => {
         },
     })
     if (isLoggedIn) {
-        return <Navigate to='/' />
+        return <Navigate to='/'/>
     }
-    return <Grid container justifyContent={'center'}>
+    return <Grid container justifyContent={'center'} className={s.loginGrid}>
         <Grid item justifyContent={'center'}>
-            <form onSubmit={formik.handleSubmit}>
+            <form onSubmit={formik.handleSubmit} className={s.form}>
                 <FormControl>
                     <FormLabel>
                         <p>To log in get registered
@@ -68,14 +69,18 @@ export const Login = () => {
                         <TextField label="Email" margin="normal" {...formik.getFieldProps('email')}/>
                         {formik.touched.email && formik.errors.email &&
                             <div style={{color: 'red', fontSize: '13px'}}> {formik.errors.email} </div>}
+
                         <TextField type="password" label="Password"
                                    margin="normal" {...formik.getFieldProps('password')}
                         />
                         {formik.touched.password && formik.errors.password &&
                             <div style={{color: 'red', fontSize: '13px'}}> {formik.errors.password} </div>}
+
                         <FormControlLabel label={'Remember me'}
-                                          control={<Checkbox {...formik.getFieldProps('rememberMe')} checked={formik.values.rememberMe} />}
+                                          control={<Checkbox {...formik.getFieldProps('rememberMe')}
+                                                             checked={formik.values.rememberMe}/>}
                         />
+
                         <Button type={'submit'} variant={'contained'} color={'primary'}>
                             Login
                         </Button>

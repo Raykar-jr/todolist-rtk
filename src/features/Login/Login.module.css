@@ -1,0 +1,10 @@
+.loginGrid {
+    margin-top: 60px;
+}
+.form {
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 10px 1px gray;
+    width: 300px;
+    text-align: center;
+}

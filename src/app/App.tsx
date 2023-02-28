@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react'
-import './App.css'
+import s from './App.module.css'
 import {TodolistsList} from '../features/TodolistsList/TodolistsList'
 import {useAppDispatch, useAppSelector} from './store'
 import {initializeAppTC, RequestStatusType} from './app-reducer'
@@ -43,12 +43,12 @@ function App() {
             <div className="App">
                 <ErrorSnackbar/>
                 <AppBar position="static">
-                    <Toolbar>
+                    <Toolbar className={s.toolbar}>
                         <IconButton edge="start" color="inherit" aria-label="menu">
                             <Menu/>
                         </IconButton>
                         <Typography variant="h6">
-                            News
+                            Todolist
                         </Typography>
                         {isLoggedIn && <Button color="inherit" onClick={logOutHandler}>Log out</Button>}
                     </Toolbar>
