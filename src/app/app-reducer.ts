@@ -1,8 +1,8 @@
-import {Dispatch} from "redux";
 import {authAPI} from "api/todolists-api";
 import { setIsLoggedInAC } from "features/Login/auth-reducer";
 import {handleServerAppError, handleServerNetworkError} from "utils/error-utils";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {AppThunk} from "app/store";
 
 
 
@@ -10,11 +10,11 @@ const slice = createSlice({
     name: 'app',
     initialState: {
         status: 'idle' as RequestStatusType,
-        error: null as null | string,
+        error: null as Nullable<string>,
         isInitialized: false
     },
     reducers: {
-        setAppErrorAC(state, action: PayloadAction<{ error: string | null }>) {
+        setAppErrorAC(state, action: PayloadAction<{ error: Nullable<string> }>) {
             state.error = action.payload.error
         },
         setAppStatusAC(state, action: PayloadAction<{ status: RequestStatusType }>) {
@@ -26,14 +26,13 @@ const slice = createSlice({
     }
 })
 export const appReducer = slice.reducer
-export const setAppErrorAC = slice.actions.setAppErrorAC
-export const setAppStatusAC = slice.actions.setAppStatusAC
-export const setIsInitializedAC = slice.actions.setIsInitializedAC
+export const {setAppErrorAC, setAppStatusAC, setIsInitializedAC} = slice.actions
+
 
 
 
 // thunks
-export const initializeAppTC = () => (dispatch: Dispatch) => {
+export const initializeAppTC = (): AppThunk => dispatch => {
     authAPI.me()
         .then(res => {
             if (res.data.resultCode === 0) {
@@ -50,4 +49,5 @@ export const initializeAppTC = () => (dispatch: Dispatch) => {
 
 // types
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
+export type Nullable<T> = T | null;
 
