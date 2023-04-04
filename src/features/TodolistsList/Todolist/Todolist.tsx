@@ -20,7 +20,7 @@ type PropsType = {
     todolist: TodolistDomainType
 }
 
-export const Todolist = React.memo(function ({todolist}: PropsType) {
+export const Todolist = React.memo( ({todolist}: PropsType) => {
     let tasks = useAppSelector<TaskType[]>(state => state.tasks[todolist.id])
 
     const dispatch = useAppDispatch()
@@ -29,23 +29,23 @@ export const Todolist = React.memo(function ({todolist}: PropsType) {
         dispatch(thunk)
     }, [])
 
-    const addTask = useCallback(function (title: string) {
-        const thunk = addTaskTC(title, todolist.id)
+    const addTask = useCallback((title: string) => {
+        const thunk = addTaskTC({title, todolistId: todolist.id})
         dispatch(thunk)
     }, [])
 
-    const removeTodolist = useCallback(function () {
+    const removeTodolist = useCallback( () => {
         const thunk = removeTodolistTC(todolist.id)
         dispatch(thunk)
     }, [])
 
-    const changeTodolistTitle = useCallback(function (title: string) {
+    const changeTodolistTitle = useCallback( (title: string) => {
         const thunk = changeTodolistTitleTC(todolist.id, title)
         dispatch(thunk)
     }, [])
 
-    const changeFilter = useCallback(function (value: FilterValuesType) {
-        const action = changeTodolistFilterAC({ id: todolist.id, filter: value })
+    const changeFilter = useCallback( (value: FilterValuesType) => {
+        const action = changeTodolistFilterAC({id: todolist.id, filter: value})
         dispatch(action)
     }, [])
 
