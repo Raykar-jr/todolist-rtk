@@ -1,9 +1,8 @@
 import {authAPI} from "api/todolists-api";
-import { setIsLoggedInAC } from "features/Login/auth-reducer";
+import {setIsLoggedInAC} from "features/Login/auth-reducer";
 import {handleServerAppError, handleServerNetworkError} from "utils/error-utils";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {AppThunk} from "app/store";
-
 
 
 const slice = createSlice({
@@ -29,18 +28,16 @@ export const appReducer = slice.reducer
 export const {setAppErrorAC, setAppStatusAC, setIsInitializedAC} = slice.actions
 
 
-
-
 // thunks
 export const initializeAppTC = (): AppThunk => dispatch => {
     authAPI.me()
         .then(res => {
             if (res.data.resultCode === 0) {
-                dispatch(setIsLoggedInAC({ value: true }));
+                dispatch(setIsLoggedInAC({isLoggedIn: true}));
             } else {
                 handleServerAppError(res.data, dispatch);
             }
-            dispatch(setIsInitializedAC({ isInitialized: true}))
+            dispatch(setIsInitializedAC({isInitialized: true}))
         })
         .catch((error) => {
             handleServerNetworkError(error, dispatch)

@@ -5,15 +5,14 @@ import {setAppStatusAC} from "app/app-reducer";
 import {AppThunk} from "app/store";
 
 
-
 const slice = createSlice({
     name: 'auth',
     initialState: {
         isLoggedIn: false
     },
     reducers: {
-        setIsLoggedInAC(state, action: PayloadAction<{ value: boolean }>) {
-            state.isLoggedIn = action.payload.value
+        setIsLoggedInAC(state, action: PayloadAction<{ isLoggedIn: boolean }>) {
+            state.isLoggedIn = action.payload.isLoggedIn
         }
     }
 })
@@ -23,11 +22,11 @@ export const setIsLoggedInAC = slice.actions.setIsLoggedInAC
 
 // thunks
 export const loginTC = (data: LoginParamsType): AppThunk => dispatch => {
-    dispatch(setAppStatusAC({ status: 'loading' }))
+    dispatch(setAppStatusAC({status: 'loading'}))
     authAPI.login(data)
         .then(res => {
             if (res.data.resultCode === 0) {
-                dispatch(setIsLoggedInAC({ value: true }))
+                dispatch(setIsLoggedInAC({isLoggedIn: true}))
             } else {
                 handleServerAppError(res.data, dispatch);
             }
@@ -36,16 +35,16 @@ export const loginTC = (data: LoginParamsType): AppThunk => dispatch => {
             handleServerNetworkError(error, dispatch)
         })
         .finally(() => {
-            dispatch(setAppStatusAC({ status: 'idle' }))
+            dispatch(setAppStatusAC({status: 'idle'}))
         })
 }
 
 export const logoutTC = (): AppThunk => dispatch => {
-    dispatch(setAppStatusAC({ status: 'loading' }))
+    dispatch(setAppStatusAC({status: 'loading'}))
     authAPI.logout()
         .then(res => {
             if (res.data.resultCode === 0) {
-                dispatch(setIsLoggedInAC({ value: false }))
+                dispatch(setIsLoggedInAC({isLoggedIn: false}))
             } else {
                 handleServerAppError(res.data, dispatch)
             }
@@ -55,6 +54,6 @@ export const logoutTC = (): AppThunk => dispatch => {
             }
         )
         .finally(() => {
-            dispatch(setAppStatusAC({ status: 'idle' }))
+            dispatch(setAppStatusAC({status: 'idle'}))
         })
 }
