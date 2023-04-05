@@ -40,7 +40,7 @@ export const Todolist = React.memo( ({todolist}: PropsType) => {
     }, [])
 
     const changeTodolistTitle = useCallback( (title: string) => {
-        const thunk = changeTodolistTitleTC(todolist.id, title)
+        const thunk = changeTodolistTitleTC({id: todolist.id, title})
         dispatch(thunk)
     }, [])
 
