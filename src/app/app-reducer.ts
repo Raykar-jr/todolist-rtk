@@ -1,8 +1,7 @@
 import {authAPI} from "api/todolists-api";
 import {setIsLoggedInAC} from "features/Login/auth-reducer";
-import {handleServerAppError, handleServerNetworkError} from "utils/error-utils";
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {AppThunk} from "app/store";
+import {handleServerNetworkError} from "utils/error-utils";
+import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 
 const slice = createSlice({
@@ -19,32 +18,30 @@ const slice = createSlice({
         setAppStatusAC(state, action: PayloadAction<{ status: RequestStatusType }>) {
             state.status = action.payload.status
         },
-        setIsInitializedAC(state, action: PayloadAction<{ isInitialized: boolean }>) {
-            state.isInitialized = action.payload.isInitialized
-        }
+    },
+    extraReducers: builder => {
+        builder
+            .addCase(initializeAppTC.fulfilled, state => {
+                state.isInitialized = true
+            })
     }
 })
 export const appReducer = slice.reducer
-export const {setAppErrorAC, setAppStatusAC, setIsInitializedAC} = slice.actions
-
+export const {setAppErrorAC, setAppStatusAC} = slice.actions
 
 // thunks
-export const initializeAppTC = (): AppThunk => dispatch => {
-    authAPI.me()
-        .then(res => {
-            if (res.data.resultCode === 0) {
-                dispatch(setIsLoggedInAC({isLoggedIn: true}));
-            } else {
-                handleServerAppError(res.data, dispatch);
-            }
-            dispatch(setIsInitializedAC({isInitialized: true}))
-        })
-        .catch((error) => {
-            handleServerNetworkError(error, dispatch)
-        })
-}
+export const initializeAppTC = createAsyncThunk('app/initializeApp', async (arg, thunkAPI) => {
+    try {
+        const res = await authAPI.me()
+        if (res.data.resultCode === 0) {
+            thunkAPI.dispatch(setIsLoggedInAC({isLoggedIn: true}));
+        }
+    } catch (error) {
+        handleServerNetworkError(error, thunkAPI.dispatch)
+        return thunkAPI.rejectWithValue(null)
+    }
+})
 
 // types
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 export type Nullable<T> = T | null;
-
