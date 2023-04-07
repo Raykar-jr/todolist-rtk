@@ -1,12 +1,12 @@
 import React, {useCallback, useEffect} from 'react'
-import {useAppDispatch, useAppSelector} from '../../app/store'
-import {addTodolistTC, fetchTodolistsTC, TodolistDomainType} from './todolists-reducer'
+import {useAppDispatch, useAppSelector} from 'app/store'
+import {addTodolist, fetchTodolists, TodolistDomainType} from './todolists-reducer'
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import {AddItemForm} from '../../components/AddItemForm/AddItemForm'
+import {AddItemForm} from 'components/AddItemForm/AddItemForm'
 import {Todolist} from './Todolist/Todolist'
 import {Navigate} from "react-router-dom";
-
+import s from './styles.module.css'
 
 export const TodolistsList: React.FC = () => {
     const todolists = useAppSelector<Array<TodolistDomainType>>(state => state.todolists)
@@ -19,13 +19,11 @@ export const TodolistsList: React.FC = () => {
         if (!isLoggedIn) {
             return
         }
-        const thunk = fetchTodolistsTC()
-        dispatch(thunk)
+        dispatch(fetchTodolists())
     }, [])
 
-    const addTodolist = useCallback((title: string) => {
-        const thunk = addTodolistTC(title)
-        dispatch(thunk)
+    const addTodolistHandler = useCallback((title: string) => {
+        dispatch(addTodolist(title))
     }, [dispatch])
 
     if (!isLoggedIn) {
@@ -33,14 +31,14 @@ export const TodolistsList: React.FC = () => {
     }
     return <>
         <Grid container style={{padding: '20px'}}>
-            <AddItemForm addItem={addTodolist}/>
+            <AddItemForm addItem={addTodolistHandler} placeholder='Enter list name'/>
         </Grid>
         <Grid container spacing={3}>
             {
                 todolists.map(tl => {
 
-                    return <Grid item key={tl.id}>
-                        <Paper style={{padding: '10px'}}>
+                    return <Grid className={s.todoWrapper} item key={tl.id}>
+                        <Paper sx={{ p: '0px 3px 20px 20px' }}>
                             <Todolist
                                 todolist={tl}
                             />

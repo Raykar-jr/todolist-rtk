@@ -8,7 +8,7 @@ import FormLabel from '@mui/material/FormLabel';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import {FormikHelpers, useFormik} from "formik";
-import {loginTC} from "./auth-reducer";
+import {login} from "./auth-reducer";
 import {useAppDispatch, useAppSelector} from "app/store";
 import {Navigate} from "react-router-dom";
 import s from './Login.module.css'
@@ -46,8 +46,8 @@ export const Login = () => {
         },
         onSubmit: async (values,formikHelpers: FormikHelpers<FormValuesType>) => {
             //dispatch(loginTC(values));
-           const action = await dispatch(loginTC(values))
-            if (loginTC.rejected.match(action)) {
+           const action = await dispatch(login(values))
+            if (login.rejected.match(action)) {
                 if (action.payload?.fieldsErrors?.length) {
                     const error = action.payload?.fieldsErrors[0]
                     formikHelpers.setFieldError(error.field, error.error)

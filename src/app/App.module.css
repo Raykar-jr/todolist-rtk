@@ -1,31 +1,22 @@
-/*
-.App {
-  padding: 30px;
-  display: flex;
+body {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    font-style: normal;
+    line-height: 24px;
 }
-
-.App > div {
-  margin-right: 50px;
+.logo {
+    width: 50px;
+    border-radius: 10px;
 }
-
-.error {
-  border: red 1px solid;
-}
-
-.error-message {
-  color: red;
-}
-
-.active-filter {
-  background-color: aquamarine;
-}
-
-.is-done {
-  opacity: 0.5;
-}
-*/
-
 .toolbar {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+}
+.loading {
+    position: fixed;
+    top: 30%;
+    text-align: center;
+    width: 100%;
 }

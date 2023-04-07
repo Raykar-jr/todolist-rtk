@@ -1,7 +1,7 @@
 import {authAPI, FieldErrorType, LoginParamsType} from "api/todolists-api";
 import {handleServerAppError, handleServerNetworkError} from "utils/error-utils";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {setAppStatusAC} from "app/app-reducer";
+import {setAppStatus} from "app/app-reducer";
 
 
 const slice = createSlice({
@@ -16,10 +16,10 @@ const slice = createSlice({
     },
     extraReducers: builder => {
         builder
-            .addCase(loginTC.fulfilled, (state) => {
+            .addCase(login.fulfilled, (state) => {
                 state.isLoggedIn = true
             })
-            .addCase(logoutTC.fulfilled, state => {
+            .addCase(logout.fulfilled, state => {
                 state.isLoggedIn = false
             })
     }
@@ -29,9 +29,9 @@ export const authReducer = slice.reducer
 export const setIsLoggedInAC = slice.actions.setIsLoggedInAC
 
 // thunks
-export const loginTC = createAsyncThunk<undefined, LoginParamsType, { rejectValue: { errors: string[], fieldsErrors: FieldErrorType[] } }>('auth/login', async (data, thunkAPI) => {
+export const login = createAsyncThunk<undefined, LoginParamsType, { rejectValue: { errors: string[], fieldsErrors: FieldErrorType[] } }>('auth/login', async (data, thunkAPI) => {
     try {
-        thunkAPI.dispatch(setAppStatusAC({status: 'loading'}))
+        thunkAPI.dispatch(setAppStatus({status: 'loading'}))
         const res = await authAPI.login(data)
         if (res.data.resultCode === 0) {
             return;
@@ -44,12 +44,12 @@ export const loginTC = createAsyncThunk<undefined, LoginParamsType, { rejectValu
         // @ts-ignore
         return thunkAPI.rejectWithValue({errors: [error.message], fieldsErrors: undefined})
     } finally {
-        thunkAPI.dispatch(setAppStatusAC({status: 'idle'}))
+        thunkAPI.dispatch(setAppStatus({status: 'idle'}))
     }
 })
-export const logoutTC = createAsyncThunk('auth/logout', async (param, thunkAPI) => {
+export const logout = createAsyncThunk('auth/logout', async (param, thunkAPI) => {
     try {
-        thunkAPI.dispatch(setAppStatusAC({status: 'loading'}))
+        thunkAPI.dispatch(setAppStatus({status: 'loading'}))
         const res = await authAPI.logout()
         if (res.data.resultCode === 0) {
             return;
@@ -61,6 +61,6 @@ export const logoutTC = createAsyncThunk('auth/logout', async (param, thunkAPI) 
         handleServerNetworkError(error, thunkAPI.dispatch)
         return thunkAPI.rejectWithValue(null)
     } finally {
-        thunkAPI.dispatch(setAppStatusAC({status: 'idle'}))
+        thunkAPI.dispatch(setAppStatus({status: 'idle'}))
     }
 })

@@ -2,13 +2,15 @@ import React, { ChangeEvent, KeyboardEvent, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import { AddBox } from '@mui/icons-material';
+import s from './styles.module.css'
 
-type AddItemFormPropsType = {
+type PropsType = {
     addItem: (title: string) => void
     disabled?: boolean
+    placeholder: string
 }
 
-export const AddItemForm = React.memo(function ({addItem, disabled = false}: AddItemFormPropsType) {
+export const AddItemForm = React.memo(function ({addItem, disabled = false, placeholder}: PropsType) {
     let [title, setTitle] = useState('')
     let [error, setError] = useState<string | null>(null)
 
@@ -34,8 +36,9 @@ export const AddItemForm = React.memo(function ({addItem, disabled = false}: Add
         }
     }
 
-    return <div>
+    return <div className={s.container}>
         <TextField variant="outlined"
+                   placeholder={placeholder}
                    disabled={disabled}
                    error={!!error}
                    value={title}
@@ -44,7 +47,7 @@ export const AddItemForm = React.memo(function ({addItem, disabled = false}: Add
                    label="Title"
                    helperText={error}
         />
-        <IconButton color="primary" onClick={addItemHandler} disabled={disabled}>
+        <IconButton sx={{ ml: '5px'}} color="primary" onClick={addItemHandler} disabled={disabled}>
             <AddBox/>
         </IconButton>
     </div>

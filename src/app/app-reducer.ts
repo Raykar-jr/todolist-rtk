@@ -12,25 +12,25 @@ const slice = createSlice({
         isInitialized: false
     },
     reducers: {
-        setAppErrorAC(state, action: PayloadAction<{ error: Nullable<string> }>) {
+        setAppError(state, action: PayloadAction<{ error: Nullable<string> }>) {
             state.error = action.payload.error
         },
-        setAppStatusAC(state, action: PayloadAction<{ status: RequestStatusType }>) {
+        setAppStatus(state, action: PayloadAction<{ status: RequestStatusType }>) {
             state.status = action.payload.status
         },
     },
     extraReducers: builder => {
         builder
-            .addCase(initializeAppTC.fulfilled, state => {
+            .addCase(initializeApp.fulfilled, state => {
                 state.isInitialized = true
             })
     }
 })
 export const appReducer = slice.reducer
-export const {setAppErrorAC, setAppStatusAC} = slice.actions
+export const {setAppError, setAppStatus} = slice.actions
 
 // thunks
-export const initializeAppTC = createAsyncThunk('app/initializeApp', async (arg, thunkAPI) => {
+export const initializeApp = createAsyncThunk('app/initializeApp', async (arg, thunkAPI) => {
     try {
         const res = await authAPI.me()
         if (res.data.resultCode === 0) {

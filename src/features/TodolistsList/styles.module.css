@@ -1,0 +1,41 @@
+.todoWrapper {
+    flex-basis: 33.3% !important;
+    margin-bottom: 20px !important;
+    flex-shrink: 1;
+}
+
+.todoTitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.task {
+    display: flex;
+    align-items: center;
+}
+
+.emptyTasks {
+    color: rgba(107, 128, 119, 0.56);
+}
+
+.isDone {
+    opacity: 0.5
+}
+
+.deleteTaskButton {
+    margin-left: auto !important;
+}
+
+@media screen and (max-width: 700px) {
+    .todoWrapper {
+        flex-basis: 50% !important;
+        flex-grow: 1 !important;
+    }
+}
+
+@media screen and (max-width: 555px) {
+    .todoWrapper {
+        flex-basis: 100% !important;
+    }
+}
