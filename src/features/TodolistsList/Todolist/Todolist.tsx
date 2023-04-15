@@ -69,7 +69,7 @@ export const Todolist = React.memo(({todolist}: PropsType) => {
             }
             {!tasks.length && <div className={s.emptyTasks}> No tasks found 😕</div>}
         </div>
-        <div style={{paddingTop: '10px'}}>
+        <div className={s.buttonGroup}>
             <Button variant={todolist.filter === 'all' ? 'outlined' : 'text'}
                     onClick={() => changeFilter('all')}
                     color={'inherit'}

@@ -1,4 +1,4 @@
-.loginGrid {
+.loginWrapper {
     margin-top: 60px;
 }
 .form {
@@ -7,4 +7,9 @@
     box-shadow: 2px 2px 10px 1px gray;
     width: 300px;
     text-align: center;
+}
+
+.errorText {
+    color: red;
+    font-size: 13px;
 }

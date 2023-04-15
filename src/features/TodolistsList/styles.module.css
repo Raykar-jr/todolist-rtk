@@ -10,6 +10,9 @@
     align-items: center;
 }
 
+.buttonGroup {
+    padding-top: 10px;
+}
 .task {
     display: flex;
     align-items: center;

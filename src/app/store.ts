@@ -28,6 +28,3 @@ export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, AppStateType, 
 export const useAppDispatch: () => AppDispatch = useDispatch
 export const useAppSelector: TypedUseSelectorHook<AppStateType> = useSelector
 
-// а это, чтобы можно было в консоли браузера обращаться к store в любой момент
-// @ts-ignore
-window.store = store;

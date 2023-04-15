@@ -12,6 +12,7 @@ import {login} from "./auth-reducer";
 import {useAppDispatch, useAppSelector} from "app/store";
 import {Navigate} from "react-router-dom";
 import s from './Login.module.css'
+import {selectIsLoggedIn} from "features/Login/loginSelectors";
 
 type FormValuesType = {
     email: string
@@ -22,7 +23,7 @@ type FormikErrorType = Partial<FormValuesType>
 
 export const Login = () => {
     const dispatch = useAppDispatch()
-    const isLoggedIn = useAppSelector<boolean>(state => state.auth.isLoggedIn)
+    const isLoggedIn = useAppSelector(selectIsLoggedIn)
 
     const formik = useFormik({
         initialValues: {
@@ -44,9 +45,8 @@ export const Login = () => {
             }
             return errors
         },
-        onSubmit: async (values,formikHelpers: FormikHelpers<FormValuesType>) => {
-            //dispatch(loginTC(values));
-           const action = await dispatch(login(values))
+        onSubmit: async (values, formikHelpers: FormikHelpers<FormValuesType>) => {
+            const action = await dispatch(login(values))
             if (login.rejected.match(action)) {
                 if (action.payload?.fieldsErrors?.length) {
                     const error = action.payload?.fieldsErrors[0]
@@ -58,14 +58,14 @@ export const Login = () => {
     if (isLoggedIn) {
         return <Navigate to='/'/>
     }
-    return <Grid container justifyContent={'center'} className={s.loginGrid}>
+    return <Grid container justifyContent={'center'} className={s.loginWrapper}>
         <Grid item justifyContent={'center'}>
             <form onSubmit={formik.handleSubmit} className={s.form}>
                 <FormControl>
-                    <FormLabel>
+                    <FormLabel sx={{fontFamily: 'Montserrat'}}>
                         <p>To log in get registered
                             <a href={'https://social-network.samuraijs.com/'}
-                               target={'_blank'}> here
+                               target={'_blank'}>here
                             </a>
                         </p>
                         <p>or use common test account credentials:</p>
@@ -75,20 +75,20 @@ export const Login = () => {
                     <FormGroup>
                         <TextField label="Email" margin="normal" {...formik.getFieldProps('email')}/>
                         {formik.touched.email && formik.errors.email &&
-                            <div style={{color: 'red', fontSize: '13px'}}> {formik.errors.email} </div>}
+                            <div className={s.errorText}> {formik.errors.email} </div>}
 
                         <TextField type="password" label="Password"
                                    margin="normal" {...formik.getFieldProps('password')}
                         />
                         {formik.touched.password && formik.errors.password &&
-                            <div style={{color: 'red', fontSize: '13px'}}> {formik.errors.password} </div>}
+                            <div className={s.errorText}> {formik.errors.password} </div>}
 
                         <FormControlLabel label={'Remember me'}
                                           control={<Checkbox {...formik.getFieldProps('rememberMe')}
                                                              checked={formik.values.rememberMe}/>}
                         />
 
-                        <Button type={'submit'} variant={'contained'} color={'primary'}>
+                        <Button sx={{mt: 2}} type={'submit'} variant={'contained'} color={'primary'}>
                             Login
                         </Button>
                     </FormGroup>

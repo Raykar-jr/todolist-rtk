@@ -10,6 +10,7 @@ import {Login} from "features/Login/Login";
 import CircularProgress from "@mui/material/CircularProgress";
 import {Header} from "components/Header/Header";
 import {Error404} from "components/Error404/Error404";
+import {selectAppIsInitialized} from "app/appSelectors";
 
 export const App = () => {
     const dispatch = useAppDispatch()
@@ -18,7 +19,7 @@ export const App = () => {
         dispatch(initializeApp())
     }, [])
 
-    const isInitialized = useAppSelector<boolean>(state => state.app.isInitialized)
+    const isInitialized = useAppSelector<boolean>(selectAppIsInitialized)
 
     if (!isInitialized) {
         return <div className={s.loading}>

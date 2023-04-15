@@ -9,11 +9,13 @@ import LinearProgress from "@mui/material/LinearProgress";
 import {logout} from "features/Login/auth-reducer";
 import {useAppDispatch, useAppSelector} from "app/store";
 import {RequestStatusType} from "app/app-reducer";
+import {selectIsLoggedIn} from "features/Login/loginSelectors";
+import {selectAppStatus} from "app/appSelectors";
 
 export const Header = () => {
     const dispatch = useAppDispatch()
-    const isLoggedIn = useAppSelector<boolean>(state => state.auth.isLoggedIn)
-    const status = useAppSelector<RequestStatusType>((state) => state.app.status)
+    const isLoggedIn = useAppSelector<boolean>(selectIsLoggedIn)
+    const status = useAppSelector<RequestStatusType>(selectAppStatus)
 
     const logOutHandler = () => dispatch(logout())
     return (
