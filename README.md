@@ -1,3 +1,5 @@
+![task-manager](https://user-images.githubusercontent.com/108129716/232459879-a3fcdfcf-98e5-4e4a-a1e0-77bcf03491f5.gif)
+
 # Менеджер задач
 
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
